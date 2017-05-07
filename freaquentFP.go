@@ -197,10 +197,11 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 	timeStamp:=args[1]
 	ffId := args[2]
 	
-	assignerOrg1, err := stub.GetState(args[3])
+	/*assignerOrg1, err := stub.GetState(args[3])
 	assignerOrg := string(assignerOrg1)
 	
-	source := assignerOrg
+	source := assignerOrg*/
+	source := args[3]
 	points := args[4]
 	trxntype := args[5]
 	trxnSubType := args[6]
