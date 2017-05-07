@@ -330,29 +330,29 @@ func (t *SKH) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 
 /*
 //get the miles against the ffid (irrespective of org)
-func (t *FFP) getMile(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) getMile(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting ffId to query")
+		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
 	ffId := args[0]
 	
 
-	// Get the row pertaining to this ffId
+	// Get the row pertaining to this PesonId
 	var columns []shim.Column
-	col1 := shim.Column{Value: &shim.Column_String_{String_: ffId}}
+	col1 := shim.Column{Value: &shim.Column_String_{String_: PersonId}}
 	columns = append(columns, col1)
 
-	row, err := stub.GetRow("UserDetails", columns)
+	row, err := stub.GetRow("PersonDetails", columns)
 	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get the data for the ffId " + ffId + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get the data for the PersonId " + PersonId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
-		jsonResp := "{\"Error\":\"Failed to get the data for the ffId " + ffId + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get the data for the PersonId " + PersonId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
