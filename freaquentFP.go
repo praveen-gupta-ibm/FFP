@@ -133,7 +133,7 @@ func (t *SKH) Init(stub shim.ChaincodeStubInterface, function string, args []str
 func (t *SKH) registerPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 if len(args) != 12 {
-			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 12. Got: %d.", len(args))
+			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 12 . Got: %d.", len(args))
 		}
 		
 		PersonId:=args[0]
