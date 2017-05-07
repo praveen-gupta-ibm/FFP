@@ -447,14 +447,14 @@ func (t *SKH) getAllTransaction(stub shim.ChaincodeStubInterface, args []string)
 		newApp:= new(Transaction)
 		newApp.TrxId = row.Columns[0].GetString_()
 		newApp.TimeStamp = row.Columns[1].GetString_()
-		newApp.FfId = row.Columns[2].GetString_()
+		newApp.PersonId = row.Columns[2].GetString_()
 		newApp.Source = row.Columns[3].GetString_()
 		newApp.skill = row.Columns[4].GetString_()
 		newApp.Trxntype = row.Columns[5].GetString_()
 		newApp.TrxnSubType = row.Columns[6].GetString_()
 		newApp.Remarks = row.Columns[7].GetString_()
 		
-		if newApp.FfId == ffId{
+		if newApp.PersonId == PersonId{
 		res2E=append(res2E,newApp)		
 		}				
 	}
