@@ -306,24 +306,24 @@ func (t *SKH) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 		//inserting the transaction
 		
 		// Insert a row
-		ok, err = stub.InsertRow("Transaction", shim.Row{
+	err = stub.InsertRow("Transaction", shim.Row{
 			Columns: []*shim.Column{
 				&shim.Column{Value: &shim.Column_String_{String_: trxId}},
 				&shim.Column{Value: &shim.Column_String_{String_: timeStamp}},
 				&shim.Column{Value: &shim.Column_String_{String_: PersonId}},
 				&shim.Column{Value: &shim.Column_String_{String_: source}},
-				&shim.Column{Value: &shim.Column_String_{String_: skill}},
+				&shim.Column{Value: &shim.Column_String_{String_: Skill}},
 				&shim.Column{Value: &shim.Column_String_{String_: trxntype}},
 				&shim.Column{Value: &shim.Column_String_{String_: trxnSubType}},
-				&shim.Column{Value: &shim.Column_String_{String_: remarks}}
+				&shim.Column{Value: &shim.Column_String_{String_: remarks}},
 			}})
 
 		if err != nil {
 			return nil, err 
 		}
-		if !ok && err == nil {
+	/*	if !ok && err == nil {
 			return nil, errors.New("Row already exists.")
-		}		
+		}	*/	
 	return nil, nil
 
 }
