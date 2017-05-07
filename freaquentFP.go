@@ -148,10 +148,11 @@ if len(args) != 11 {
 		city:=args[9]
 		zip:=args[10]
 		
-		assignerOrg1, err := stub.GetState(args[11])
+		/*assignerOrg1, err := stub.GetState(args[11])
 		assignerOrg := string(assignerOrg1)
 		
-		createdBy:=assignerOrg
+		createdBy:=assignerOrg*/
+		createdBy:=args[11]
 		//totalPoint:="0"
 
 
