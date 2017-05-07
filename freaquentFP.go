@@ -21,7 +21,7 @@ type SKH struct {
 // PersonDetails is for storing Person Details
 
 type PersonDetails struct{	
-	PersonId string `json:"ffId"`
+	PersonId string `json:"PersonId"`
 	Title string `json:"title"`
 	Gender string `json:"gender"`
 	FirstName string `json:"firstName"`
