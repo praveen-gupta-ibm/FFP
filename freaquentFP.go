@@ -198,11 +198,11 @@ func (t *SKH) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 	timeStamp:=args[1]
 	PersonId := args[2]
 	
-	assignerOrg1, err := stub.GetState(args[3])
+	/*assignerOrg1, err := stub.GetState(args[3])
 	assignerOrg := string(assignerOrg1)
 	
-	source := assignerOrg
-	//source := args[3]
+	source := assignerOrg*/
+	source := args[3]
 	skill := args[4]
 	trxntype := args[5]
 	trxnSubType := args[6]
