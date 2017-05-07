@@ -14,7 +14,7 @@ import (
 
  
 // SKH is a high level smart contract that
-type FFP struct {
+type SKH struct {
 
 }
 
@@ -65,7 +65,7 @@ type VerifyU struct{
 
 
 // Init initializes the smart contracts
-func (t *FFP) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SKH) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	// Check if table already exists
 	_, err := stub.GetTable("PersonDetails")
@@ -130,7 +130,7 @@ func (t *FFP) Init(stub shim.ChaincodeStubInterface, function string, args []str
 
 	
 //registerPerson to register a person
-func (t *FFP) registerPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) registerPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 if len(args) != 12 {
 			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 12. Got: %d.", len(args))
@@ -187,7 +187,7 @@ if len(args) != 12 {
 
 
 // add the transaction(irrespective of org)
-func (t *FFP) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 8 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 8.")
@@ -372,7 +372,7 @@ func (t *FFP) getMile(stub shim.ChaincodeStubInterface, args []string) ([]byte, 
 
 
 //get transaction against the Personid (depends on org)
-func (t *FFP) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
@@ -421,7 +421,7 @@ func (t *FFP) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 
 
 //get All transaction against Personid (irrespective of org)
-func (t *FFP) getAllTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) getAllTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
@@ -468,7 +468,7 @@ func (t *FFP) getAllTransaction(stub shim.ChaincodeStubInterface, args []string)
 
 
 // to get the deatils of a user against ffid (for internal testing, irrespective of org)
-func (t *FFP) getPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) getPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
@@ -520,30 +520,30 @@ func (t *FFP) getPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte
 
 
 // verify the user is present or not (for internal testing, irrespective of org)
-func (t *FFP) verifyUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SKH) verifyPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting ffId to query")
+		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
-	ffId := args[0]
+	PersonId := args[0]
 	dob := args[1]
 	
 
 	// Get the row pertaining to this ffId
 	var columns []shim.Column
-	col1 := shim.Column{Value: &shim.Column_String_{String_: ffId}}
+	col1 := shim.Column{Value: &shim.Column_String_{String_: PersonId}}
 	columns = append(columns, col1)
 
-	row, err := stub.GetRow("UserDetails", columns)
+	row, err := stub.GetRow("PersonDetails", columns)
 	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get the data for the application " + ffId + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get the data for the application " + PersonId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
-		jsonResp := "{\"Error\":\"Failed to get the data for the application " + ffId + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get the data for the application " + PersonId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
@@ -567,7 +567,7 @@ func (t *FFP) verifyUser(stub shim.ChaincodeStubInterface, args []string) ([]byt
 
 
 // Invoke invokes the chaincode
-func (t *FFP) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SKH) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	if function == "registerPerson" {
 		t := SKH{}
@@ -582,7 +582,7 @@ func (t *FFP) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 }
 
 // query queries the chaincode
-func (t *FFP) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SKH) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	if function == "getMile" {
 		t := SKH{}
