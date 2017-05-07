@@ -13,15 +13,15 @@ import (
 
 
  
-// FFP is a high level smart contract that FFPs together business artifact based smart contracts
+// SKH is a high level smart contract that
 type FFP struct {
 
 }
 
-// UserDetails is for storing User Details
+// PersonDetails is for storing Person Details
 
-type UserDetails struct{	
-	FfId string `json:"ffId"`
+type PersonDetails struct{	
+	PersonId string `json:"ffId"`
 	Title string `json:"title"`
 	Gender string `json:"gender"`
 	FirstName string `json:"firstName"`
@@ -33,7 +33,7 @@ type UserDetails struct{
 	City string `json:"city"`
 	Zip string `json:"zip"`
 	CreatedBy string `json:"createdBy"`
-	TotalPoint string `json:"totalPoint"`
+	//TotalPoint string `json:"totalPoint"`
 }
 
 // Transaction is for storing transaction Details
@@ -41,9 +41,9 @@ type UserDetails struct{
 type Transaction struct{	
 	TrxId string `json:"trxId"`
 	TimeStamp string `json:"timeStamp"`
-	FfId string `json:"ffId"`
+	PersonId string `json:"ffId"`
 	Source string `json:"source"`
-	Points string `json:"points"`
+	Skill string `json:"skill"`
 	Trxntype string `json:"trxntype"`
 	TrxnSubType string `json:"trxnSubType"`
 	Remarks string `json:"remarks"`
@@ -68,15 +68,15 @@ type VerifyU struct{
 func (t *FFP) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	// Check if table already exists
-	_, err := stub.GetTable("UserDetails")
+	_, err := stub.GetTable("PersonDetails")
 	if err == nil {
 		// Table already exists; do not recreate
 		return nil, nil
 	}
 
 	// Create application Table
-	err = stub.CreateTable("UserDetails", []*shim.ColumnDefinition{
-		&shim.ColumnDefinition{Name: "ffId", Type: shim.ColumnDefinition_STRING, Key: true},
+	err = stub.CreateTable("PersonDetails", []*shim.ColumnDefinition{
+		&shim.ColumnDefinition{Name: "PersonId", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "title", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "gender", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "firstName", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -88,10 +88,10 @@ func (t *FFP) Init(stub shim.ChaincodeStubInterface, function string, args []str
 		&shim.ColumnDefinition{Name: "city", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "zip", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "createdBy", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "totalPoint", Type: shim.ColumnDefinition_STRING, Key: false},
+		//&shim.ColumnDefinition{Name: "totalPoint", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 	if err != nil {
-		return nil, errors.New("Failed creating UserDetails.")
+		return nil, errors.New("Failed creating PersonDetails.")
 	}
 	
 
@@ -109,7 +109,7 @@ func (t *FFP) Init(stub shim.ChaincodeStubInterface, function string, args []str
 		&shim.ColumnDefinition{Name: "timeStamp", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "ffId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "source", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "points", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "skill", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "trxntype", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "trxnSubType", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "remarks", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -119,18 +119,18 @@ func (t *FFP) Init(stub shim.ChaincodeStubInterface, function string, args []str
 	}
 		
 	// setting up the users role
-	stub.PutState("user_type1_1", []byte("etihad"))
-	stub.PutState("user_type1_2", []byte("hertz"))
-	stub.PutState("user_type1_3", []byte("marriot"))
-	stub.PutState("user_type1_4", []byte("amazon"))	
+	stub.PutState("user_type1_1", []byte("University"))
+	stub.PutState("user_type1_2", []byte("Institute"))
+	stub.PutState("user_type1_3", []byte("Organization1"))
+	stub.PutState("user_type1_4", []byte("Organization2"))	
 	
 	return nil, nil
 }
 	
 
 	
-//registerUser to register a user
-func (t *FFP) registerUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+//registerPerson to register a person
+func (t *FFP) registerPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 if len(args) != 12 {
 			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 12. Got: %d.", len(args))
@@ -152,13 +152,13 @@ if len(args) != 12 {
 		assignerOrg := string(assignerOrg1)
 		
 		createdBy:=assignerOrg
-		totalPoint:="0"
+		//totalPoint:="0"
 
 
 		// Insert a row
-		ok, err := stub.InsertRow("UserDetails", shim.Row{
+		ok, err := stub.InsertRow("PersonDetails", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: ffId}},
+				&shim.Column{Value: &shim.Column_String_{String_: PersonId}},
 				&shim.Column{Value: &shim.Column_String_{String_: title}},
 				&shim.Column{Value: &shim.Column_String_{String_: gender}},
 				&shim.Column{Value: &shim.Column_String_{String_: firstName}},
@@ -170,7 +170,7 @@ if len(args) != 12 {
 				&shim.Column{Value: &shim.Column_String_{String_: city}},
 				&shim.Column{Value: &shim.Column_String_{String_: zip}},
 				&shim.Column{Value: &shim.Column_String_{String_: createdBy}},
-				&shim.Column{Value: &shim.Column_String_{String_: totalPoint}},
+			//	&shim.Column{Value: &shim.Column_String_{String_: totalPoint}},
 			}})
 
 		if err != nil {
@@ -186,41 +186,41 @@ if len(args) != 12 {
 
 
 
-// add or delete points and insert the transaction(irrespective of org)
-func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+// add the transaction(irrespective of org)
+func (t *FFP) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 8 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2.")
+		return nil, errors.New("Incorrect number of arguments. Expecting 8.")
 	}
 
 	trxId := args[0]
 	timeStamp:=args[1]
-	ffId := args[2]
+	PersonId := args[2]
 	
-	/*assignerOrg1, err := stub.GetState(args[3])
+	assignerOrg1, err := stub.GetState(args[3])
 	assignerOrg := string(assignerOrg1)
 	
-	source := assignerOrg*/
-	source := args[3]
-	points := args[4]
+	source := assignerOrg
+	//source := args[3]
+	skill := args[4]
 	trxntype := args[5]
 	trxnSubType := args[6]
 	remarks := args[7]
 	
-	newPoints, _ := strconv.ParseInt(points, 10, 0)
+	/*newPoints, _ := strconv.ParseInt(points, 10, 0)
 	
 	//whether ADD_PENDING, DELETE_PENDING 
 	if trxnSubType == "ADD_PENDING" || trxnSubType == "DELETE_PENDING"{
 		newPoints = 0
 	}
 	
-
+*/
 	// Get the row pertaining to this ffid
 	var columns []shim.Column
 	col1 := shim.Column{Value: &shim.Column_String_{String_: ffId}}
 	columns = append(columns, col1)
 
-	row, err := stub.GetRow("UserDetails", columns)
+	row, err := stub.GetRow("PersonDetails", columns)
 	if err != nil {
 		return nil, fmt.Errorf("Error: Failed retrieving user with ffid %s. Error %s", ffId, err.Error())
 	}
@@ -229,7 +229,7 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 	if len(row.Columns) == 0 {
 		return nil, nil
 	}
-
+/*
 	newRoyaltyPoint := row.Columns[12].GetString_()
 	
 	if trxntype=="add"{
@@ -260,7 +260,6 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 	if err != nil {
 		return nil, errors.New("Failed deleting row.")
 	}
-
 	
 	//ffId := row.Columns[0].GetString_()
 	
@@ -275,11 +274,11 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 	city := row.Columns[9].GetString_()
 	zip := row.Columns[10].GetString_()
 	createdBy := row.Columns[11].GetString_()
-	totalPoint := newRoyaltyPoint
+//	totalPoint := newRoyaltyPoint
 
 
 		// Insert a row
-		ok, err := stub.InsertRow("UserDetails", shim.Row{
+		ok, err := stub.InsertRow("PersonDetails", shim.Row{
 			Columns: []*shim.Column{
 				&shim.Column{Value: &shim.Column_String_{String_: ffId}},
 				&shim.Column{Value: &shim.Column_String_{String_: title}},
@@ -293,7 +292,7 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 				&shim.Column{Value: &shim.Column_String_{String_: city}},
 				&shim.Column{Value: &shim.Column_String_{String_: zip}},
 				&shim.Column{Value: &shim.Column_String_{String_: createdBy}},
-				&shim.Column{Value: &shim.Column_String_{String_: totalPoint}},
+	//			&shim.Column{Value: &shim.Column_String_{String_: totalPoint}},
 			}})
 
 		if err != nil {
@@ -302,7 +301,7 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 		if !ok && err == nil {
 			return nil, errors.New("Row already exists.")
 		}
-
+*/
 		
 		//inserting the transaction
 		
@@ -311,9 +310,9 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 			Columns: []*shim.Column{
 				&shim.Column{Value: &shim.Column_String_{String_: trxId}},
 				&shim.Column{Value: &shim.Column_String_{String_: timeStamp}},
-				&shim.Column{Value: &shim.Column_String_{String_: ffId}},
+				&shim.Column{Value: &shim.Column_String_{String_: PersonId}},
 				&shim.Column{Value: &shim.Column_String_{String_: source}},
-				&shim.Column{Value: &shim.Column_String_{String_: points}},
+				&shim.Column{Value: &shim.Column_String_{String_: skill}},
 				&shim.Column{Value: &shim.Column_String_{String_: trxntype}},
 				&shim.Column{Value: &shim.Column_String_{String_: trxnSubType}},
 				&shim.Column{Value: &shim.Column_String_{String_: remarks}},
@@ -329,7 +328,7 @@ func (t *FFP) addDeleteMile(stub shim.ChaincodeStubInterface, args []string) ([]
 
 }
 
-
+/*
 //get the miles against the ffid (irrespective of org)
 func (t *FFP) getMile(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
@@ -369,14 +368,14 @@ func (t *FFP) getMile(stub shim.ChaincodeStubInterface, args []string) ([]byte, 
 	return mapB, nil
 
 }
+*/
 
 
-
-//get all transaction against the ffid (depends on org)
+//get transaction against the Personid (depends on org)
 func (t *FFP) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting ffId to query")
+		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
 	ffId := args[0]
@@ -401,12 +400,12 @@ func (t *FFP) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 		newApp.TimeStamp = row.Columns[1].GetString_()
 		newApp.FfId = row.Columns[2].GetString_()
 		newApp.Source = row.Columns[3].GetString_()
-		newApp.Points = row.Columns[4].GetString_()
+		newApp.skill = row.Columns[4].GetString_()
 		newApp.Trxntype = row.Columns[5].GetString_()
 		newApp.TrxnSubType = row.Columns[6].GetString_()
 		newApp.Remarks = row.Columns[7].GetString_()
 		
-		if newApp.FfId == ffId && newApp.Source == assignerOrg{
+		if newApp.PersonId == PersonId && newApp.Source == assignerOrg{
 		res2E=append(res2E,newApp)		
 		}				
 	}
@@ -421,11 +420,11 @@ func (t *FFP) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 
 
 
-//get All transaction against ffid (irrespective of org)
+//get All transaction against Personid (irrespective of org)
 func (t *FFP) getAllTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting ffId to query")
+		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
 	ffId := args[0]
@@ -450,7 +449,7 @@ func (t *FFP) getAllTransaction(stub shim.ChaincodeStubInterface, args []string)
 		newApp.TimeStamp = row.Columns[1].GetString_()
 		newApp.FfId = row.Columns[2].GetString_()
 		newApp.Source = row.Columns[3].GetString_()
-		newApp.Points = row.Columns[4].GetString_()
+		newApp.skill = row.Columns[4].GetString_()
 		newApp.Trxntype = row.Columns[5].GetString_()
 		newApp.TrxnSubType = row.Columns[6].GetString_()
 		newApp.Remarks = row.Columns[7].GetString_()
@@ -469,36 +468,36 @@ func (t *FFP) getAllTransaction(stub shim.ChaincodeStubInterface, args []string)
 
 
 // to get the deatils of a user against ffid (for internal testing, irrespective of org)
-func (t *FFP) getUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *FFP) getPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting ffId to query")
+		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
 	ffId := args[0]
 	
 
-	// Get the row pertaining to this ffId
+	// Get the row pertaining to this PersonId
 	var columns []shim.Column
-	col1 := shim.Column{Value: &shim.Column_String_{String_: ffId}}
+	col1 := shim.Column{Value: &shim.Column_String_{String_: PersonId}}
 	columns = append(columns, col1)
 
-	row, err := stub.GetRow("UserDetails", columns)
+	row, err := stub.GetRow("PersonDetails", columns)
 	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get the data for the application " + ffId + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get the data for the application " + PersonId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
-		jsonResp := "{\"Error\":\"Failed to get the data for the application " + ffId + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get the data for the application " + PersonId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
 	
-	res2E := UserDetails{}
+	res2E := PersonDetails{}
 	
-	res2E.FfId = row.Columns[0].GetString_()
+	res2E.PersonId = row.Columns[0].GetString_()
 	res2E.Title = row.Columns[1].GetString_()
 	res2E.Gender = row.Columns[2].GetString_()
 	res2E.FirstName = row.Columns[3].GetString_()
@@ -510,7 +509,7 @@ func (t *FFP) getUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, 
 	res2E.City = row.Columns[9].GetString_()
 	res2E.Zip = row.Columns[10].GetString_()
 	res2E.CreatedBy = row.Columns[11].GetString_()
-	res2E.TotalPoint = row.Columns[12].GetString_()
+	//res2E.TotalPoint = row.Columns[12].GetString_()
 	
     mapB, _ := json.Marshal(res2E)
     fmt.Println(string(mapB))
@@ -570,12 +569,12 @@ func (t *FFP) verifyUser(stub shim.ChaincodeStubInterface, args []string) ([]byt
 // Invoke invokes the chaincode
 func (t *FFP) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
-	if function == "registerUser" {
-		t := FFP{}
-		return t.registerUser(stub, args)	
-	} else if function == "addDeleteMile" { 
-		t := FFP{}
-		return t.addDeleteMile(stub, args)
+	if function == "registerPerson" {
+		t := SKH{}
+		return t.registerPerson(stub, args)	
+	} else if function == "addTransaction" { 
+		t := SKH{}
+		return t.addTransaction(stub, args)
 	}
 
 	return nil, errors.New("Invalid invoke function name.")
@@ -586,19 +585,19 @@ func (t *FFP) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 func (t *FFP) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	if function == "getMile" {
-		t := FFP{}
+		t := SKH{}
 		return t.getMile(stub, args)		
 	} else if function == "getTransaction" { 
-		t := FFP{}
+		t := SKH{}
 		return t.getTransaction(stub, args)
 	}else if function == "getAllTransaction" { 
-		t := FFP{}
+		t := SKH{}
 		return t.getAllTransaction(stub, args)
-	} else if function == "getUser" { 
-		t := FFP{}
-		return t.getUser(stub, args)
+	} else if function == "getPerson" { 
+		t := SKH{}
+		return t.getPerson(stub, args)
 	}else if function == "verifyUser" { 
-		t := FFP{}
+		t := SKH{}
 		return t.verifyUser(stub, args)
 	}
 	
@@ -607,8 +606,8 @@ func (t *FFP) Query(stub shim.ChaincodeStubInterface, function string, args []st
 
 func main() {
 	primitives.SetSecurityLevel("SHA3", 256)
-	err := shim.Start(new(FFP))
+	err := shim.Start(new(SKH))
 	if err != nil {
-		fmt.Printf("Error starting FFP: %s", err)
+		fmt.Printf("Error starting SKH: %s", err)
 	}
 } 
