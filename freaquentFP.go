@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strconv"
+	//"strconv"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/core/crypto/primitives"
@@ -449,7 +449,7 @@ func (t *SKH) getAllTransaction(stub shim.ChaincodeStubInterface, args []string)
 		newApp.TimeStamp = row.Columns[1].GetString_()
 		newApp.PersonId = row.Columns[2].GetString_()
 		newApp.Source = row.Columns[3].GetString_()
-		newApp.skill = row.Columns[4].GetString_()
+		newApp.Skill = row.Columns[4].GetString_()
 		newApp.Trxntype = row.Columns[5].GetString_()
 		newApp.TrxnSubType = row.Columns[6].GetString_()
 		newApp.Remarks = row.Columns[7].GetString_()
@@ -597,9 +597,9 @@ func (t *SKH) Query(stub shim.ChaincodeStubInterface, function string, args []st
 	} else if function == "getPerson" { 
 		t := SKH{}
 		return t.getPerson(stub, args)
-	}else if function == "verifyUser" { 
+	}else if function == "verifyPerson" { 
 		t := SKH{}
-		return t.verifyUser(stub, args)
+		return t.verifyPerson(stub, args)
 	}
 	
 	return nil, nil
