@@ -41,7 +41,7 @@ type PersonDetails struct{
 type Transaction struct{	
 	TrxId string `json:"trxId"`
 	TimeStamp string `json:"timeStamp"`
-	PersonId string `json:"ffId"`
+	PersonId string `json:"PersonId"`
 	Source string `json:"source"`
 	Skill string `json:"skill"`
 	Trxntype string `json:"trxntype"`
@@ -107,7 +107,7 @@ func (t *SKH) Init(stub shim.ChaincodeStubInterface, function string, args []str
 	err = stub.CreateTable("Transaction", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "trxId", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "timeStamp", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "ffId", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "PersonId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "source", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "skill", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "trxntype", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -136,7 +136,7 @@ if len(args) != 12 {
 			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 12. Got: %d.", len(args))
 		}
 		
-		ffId:=args[0]
+		PersonId:=args[0]
 		title:=args[1]
 		gender:=args[2]
 		firstName:=args[3]
@@ -215,14 +215,14 @@ func (t *SKH) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 	}
 	
 */
-	// Get the row pertaining to this ffid
+	// Get the row pertaining to this Personid
 	var columns []shim.Column
-	col1 := shim.Column{Value: &shim.Column_String_{String_: ffId}}
+	col1 := shim.Column{Value: &shim.Column_String_{String_: PersonId}}
 	columns = append(columns, col1)
 
 	row, err := stub.GetRow("PersonDetails", columns)
 	if err != nil {
-		return nil, fmt.Errorf("Error: Failed retrieving user with ffid %s. Error %s", ffId, err.Error())
+		return nil, fmt.Errorf("Error: Failed retrieving user with Personid %s. Error %s", PersonId, err.Error())
 	}
 
 	// GetRows returns empty message if key does not exist
@@ -378,7 +378,7 @@ func (t *SKH) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
-	ffId := args[0]
+	PersonId := args[0]
 	assignerRole := args[1]
 
 	var columns []shim.Column
@@ -398,7 +398,7 @@ func (t *SKH) getTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 		newApp:= new(Transaction)
 		newApp.TrxId = row.Columns[0].GetString_()
 		newApp.TimeStamp = row.Columns[1].GetString_()
-		newApp.FfId = row.Columns[2].GetString_()
+		newApp.PersonId = row.Columns[2].GetString_()
 		newApp.Source = row.Columns[3].GetString_()
 		newApp.skill = row.Columns[4].GetString_()
 		newApp.Trxntype = row.Columns[5].GetString_()
@@ -427,7 +427,7 @@ func (t *SKH) getAllTransaction(stub shim.ChaincodeStubInterface, args []string)
 		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
-	ffId := args[0]
+	PersonId := args[0]
 	//assignerRole := args[1]
 
 	var columns []shim.Column
@@ -474,7 +474,7 @@ func (t *SKH) getPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte
 		return nil, errors.New("Incorrect number of arguments. Expecting PersonId to query")
 	}
 
-	ffId := args[0]
+	PersonId := args[0]
 	
 
 	// Get the row pertaining to this PersonId
