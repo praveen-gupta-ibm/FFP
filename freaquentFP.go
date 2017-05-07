@@ -315,7 +315,7 @@ func (t *SKH) addTransaction(stub shim.ChaincodeStubInterface, args []string) ([
 				&shim.Column{Value: &shim.Column_String_{String_: skill}},
 				&shim.Column{Value: &shim.Column_String_{String_: trxntype}},
 				&shim.Column{Value: &shim.Column_String_{String_: trxnSubType}},
-				&shim.Column{Value: &shim.Column_String_{String_: remarks}},
+				&shim.Column{Value: &shim.Column_String_{String_: remarks}}
 			}})
 
 		if err != nil {
